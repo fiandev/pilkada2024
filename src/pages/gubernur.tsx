@@ -178,7 +178,8 @@ export default function Home() {
           color: candidateInfo?.warna || '#000000'
         };
       });
-      return [entries, {
+      
+      return [entries as any, {
         labels: entries.map(item => item.label),
         datasets: [{
           label: 'Election Results',
@@ -186,7 +187,7 @@ export default function Home() {
           backgroundColor: entries.map(item => item.color),
           hoverOffset: 4
         }]
-      }];
+      } as any];
   };
 
   const getOverallChartData = (provinceCode: string) => {
