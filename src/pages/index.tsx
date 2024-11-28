@@ -134,7 +134,7 @@ export default function Home() {
     const districtData = data.tungsura.table[districtCode];
     if (!districtData) return [];
     
-    let entries = Object.entries(districtData)
+    const entries = Object.entries(districtData)
       .filter(([key]) => key !== 'psu' && key !== 'progres' && key !== 'status_progress')
       .map(([key, value]) => ({
         id: key,

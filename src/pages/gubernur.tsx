@@ -167,7 +167,7 @@ export default function Home() {
     const provinceCode = selectedProvince.substring(0, 2);
     const provinceCandidates = candidates[provinceCode];
 
-    let entries = Object.entries(districtData)
+    const entries = Object.entries(districtData)
       .filter(([key]) => key.startsWith('1000'))
       .map(([key, value]) => {
         const candidateInfo = provinceCandidates?.[key];
@@ -379,26 +379,10 @@ export default function Home() {
                       </div>
                     </div>
 
-                    {chartData.length > 0 && (
+                    {entries.length > 0 && (
                       <>
-                        <div className="aspect-square relative mb-4">
-                          <PieChart
-                            data={chartData.map(item => ({
-                              title: String(item.label),
-                              value: item.value,
-                              color: String(item.color)
-                            }))}
-                            label={({ dataEntry }) => `${((dataEntry.value / total) * 100).toFixed(2)}%`}
-                            labelStyle={{
-                              fontSize: '0.25rem',
-                              fontFamily: 'sans-serif',
-                            }}
-                            labelPosition={70}
-                          />
-                        </div>
-
                         <div className="space-y-2">
-                          {chartData.map(item => (
+                          {entries.map(item => (
                             <div key={item.id} className="flex justify-between items-center text-sm">
                               <div className="flex items-center gap-2">
                                 <div 
