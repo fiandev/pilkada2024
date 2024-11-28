@@ -156,6 +156,23 @@ export default function Home() {
         }]
       } as any];
   };
+  
+  const chartOptions = {
+      tooltips: {
+          enabled: false
+      },
+      plugins: {
+          datalabels: {
+              formatter: (value, ctx) => {
+                  const datapoints = ctx.chart.data.datasets[0].data
+                  const total = datapoints.reduce((total, datapoint) => total + datapoint, 0)
+                  const percentage = value / total * 100
+                  return percentage.toFixed(2) + "%";
+              },
+              color: '#fff',
+          }
+      }
+  };
 
   return (
     <main className={`${geistSans.variable} ${geistMono.variable} min-h-screen p-4 sm:p-8 font-[family-name:var(--font-geist-sans)]`}>
@@ -244,6 +261,7 @@ export default function Home() {
                     <div className="aspect-square relative mb-4">
                       <Pie
                         data={chartData}
+                        options={chartOptions}
                       />
                     </div>
 

@@ -221,11 +221,53 @@ export default function Home() {
       }]
     } as any];
   };
-
+  const getElectionProvinceResults = () => {
+    if (!data && !provinceCode) return [];
+    
+    const provinceCandidates = overallCandidates[provinceCode];
+    const entries = Object.entries(data.tungsura.chart)
+      .filter(([key]) => key.startsWith('1000'))
+      .map(([key, value]) => {
+        const candidateInfo = provinceCandidates?.[key];
+        return {
+          id: key,
+          value: typeof value === 'number' ? value : 0,
+          label: candidateInfo?.nama || '',
+          color: candidateInfo?.warna || '#000000'
+        };
+      });
+      
+    return [entries as any, {
+      labels: entries.map((item, index) => `Candidate #${ index + 1}`),
+      datasets: [{
+        label: 'Total Votes',
+        data: entries.map(item => item.value),
+        backgroundColor: entries.map(item => item.color),
+        hoverOffset: 4
+      }]
+    } as any];
+  }
   // Add clear filters function
   const clearFilters = () => {
     setSelectedProvince("");
     setSelectedDistrict("");
+  };
+  
+  const chartOptions = {
+      tooltips: {
+          enabled: false
+      },
+      plugins: {
+          datalabels: {
+              formatter: (value, ctx) => {
+                  const datapoints = ctx.chart.data.datasets[0].data
+                  const total = datapoints.reduce((total, datapoint) => total + datapoint, 0)
+                  const percentage = value / total * 100
+                  return percentage.toFixed(2) + "%";
+              },
+              color: '#fff',
+          }
+      }
   };
 
   return (
@@ -323,6 +365,7 @@ export default function Home() {
                     <div className="aspect-square relative mb-4">
                       <Pie
                         data={chartData}
+                        options={chartOptions}
                       />
                     </div>
 
@@ -394,6 +437,7 @@ export default function Home() {
                       <div className="aspect-square relative mb-4">
                         <Pie
                           data={chartData}
+                          options={chartOptions}
                         />
                       </div>
                     </div>
