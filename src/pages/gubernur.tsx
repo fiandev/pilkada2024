@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import provinces from "@/data/0.json";
 import { Pie } from 'react-chartjs-2';
 import Link from "next/link";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 
 interface Candidate {
   ts: string;
@@ -72,6 +73,7 @@ const geistMono = localFont({
   weight: "100 900",
 });
 
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 export default function Home() {
   const [selectedProvince, setSelectedProvince] = useState("");
