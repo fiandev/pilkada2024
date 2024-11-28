@@ -394,6 +394,16 @@ export default function Home() {
                               <span className="font-mono">{item.value.toLocaleString()}</span>
                             </div>
                           ))}
+                          <div key="total-votes" className="flex justify-between items-center text-sm">
+                            <div className="flex items-center gap-2">
+                              <div 
+                                className="w-3 h-3 rounded-full" 
+                                style={{ backgroundColor: "#d1cfcf" }}
+                              />
+                              <span>Total Votes</span>
+                            </div>
+                            <span className="font-mono">{total.toLocaleString()}</span>
+                          </div>
                         </div>
                       </>
                     )}
