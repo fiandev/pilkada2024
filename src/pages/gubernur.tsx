@@ -184,7 +184,7 @@ export default function Home() {
       return [entries as any, {
         labels: entries.map(item => item.label),
         datasets: [{
-          label: 'Election Results',
+          label: 'Total Votes',
           data: entries.map(item => item.value),
           backgroundColor: entries.map(item => item.color),
           hoverOffset: 4
@@ -382,10 +382,10 @@ export default function Home() {
                       </div>
                     </div>
 
-                    {entries.length > 0 && (
+                    {chartData.length > 0 && (
                       <>
                         <div className="space-y-2">
-                          {entries.map(item => (
+                          {chartData.map(item => (
                             <div key={item.id} className="flex justify-between items-center text-sm">
                               <div className="flex items-center gap-2">
                                 <div 

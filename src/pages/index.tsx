@@ -149,7 +149,7 @@ export default function Home() {
      return [entries as any, {
         labels: entries.map(item => item.label),
         datasets: [{
-          label: 'Election Results',
+          label: 'Total Votes',
           data: entries.map(item => item.value),
           backgroundColor: entries.map(item => item.color),
           hoverOffset: 4
