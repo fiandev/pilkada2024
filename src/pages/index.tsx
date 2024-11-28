@@ -1,7 +1,7 @@
 import localFont from "next/font/local";
 import { useState, useEffect } from "react";
 import provinces from "@/data/0.json";
-import { PieChart } from 'react-minimal-pie-chart';
+import { Pie } from 'react-chartjs-2';
 import Link from "next/link";
 
 interface Candidate {
@@ -133,8 +133,8 @@ export default function Home() {
 
     const districtData = data.tungsura.table[districtCode];
     if (!districtData) return [];
-
-    return Object.entries(districtData)
+    
+    let entries = Object.entries(districtData)
       .filter(([key]) => key !== 'psu' && key !== 'progres' && key !== 'status_progress')
       .map(([key, value]) => ({
         id: key,
@@ -142,6 +142,16 @@ export default function Home() {
         label: candidates[districtCode]?.[key]?.nama || '',
         color: candidates[districtCode]?.[key]?.warna || '#000000'
       }));
+      
+     return [entries, {
+        labels: entries.map(item => item.label),
+        datasets: [{
+          label: 'Election Results',
+          data: entries.map(item => item.value),
+          backgroundColor: entries.map(item => item.color),
+          hoverOffset: 4
+        }]
+      }];
   };
 
   return (
@@ -207,9 +217,9 @@ export default function Home() {
             {Object.keys(data.tungsura.table)
               .filter(districtCode => !selectedDistrict || districtCode === selectedDistrict)
               .map(districtCode => {
-                const chartData = getChartData(districtCode);
+                const [entries, chartData] = getChartData(districtCode);
                 const districtInfo = districts.find(d => d.kode === districtCode);
-                const total = chartData.reduce((sum, item) => sum + item.value, 0);
+                const total = entries.reduce((sum, item) => sum + item.value, 0);
                 const districtProgress = data.tungsura.table[districtCode].progres;
 
                 return (
@@ -229,23 +239,13 @@ export default function Home() {
                     </div>
 
                     <div className="aspect-square relative mb-4">
-                      <PieChart
-                        data={chartData.map(item => ({
-                          title: item.label,
-                          value: item.value,
-                          color: item.color
-                        }))}
-                        label={({ dataEntry }) => `${((dataEntry.value / total) * 100).toFixed(2)}%`}
-                        labelStyle={{
-                          fontSize: '0.25rem',
-                          fontFamily: 'sans-serif',
-                        }}
-                        labelPosition={70}
+                      <Pie
+                        data={chartData}
                       />
                     </div>
 
                     <div className="space-y-2">
-                      {chartData.map(item => (
+                      {entries.map(item => (
                         <div key={item.id} className="flex justify-between items-center text-sm">
                           <div className="flex items-center gap-2">
                             <div 
