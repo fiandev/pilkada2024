@@ -181,6 +181,8 @@ export default function Home() {
         };
       });
       
+      const total = entries.reduce((sum, item) => sum + item.value, 0);
+      
       return [entries as any, {
         labels: entries.map((item, index) => `Candidate #${ index + 1}`),
         datasets: [{
@@ -211,6 +213,8 @@ export default function Home() {
           color: candidateInfo?.warna || '#000000'
         };
       });
+    const total = entries.reduce((sum, item) => sum + item.value, 0);
+    
     return [entries as any, {
       labels: entries.map((item, index) => `Candidate #${ index + 1}`),
       datasets: [{
@@ -236,7 +240,8 @@ export default function Home() {
           color: candidateInfo?.warna || '#000000'
         };
       });
-      
+    const total = entries.reduce((sum, item) => sum + item.value, 0);
+    
     return [entries as any, {
       labels: entries.map((item, index) => `Candidate #${ index + 1}`),
       datasets: [{
