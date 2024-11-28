@@ -200,7 +200,7 @@ export default function Home() {
 
     const provinceCandidates = overallCandidates[provinceCode];
 
-    return Object.entries(provinceData)
+    const entries = Object.entries(provinceData)
       .filter(([key]) => key.startsWith('1000'))
       .map(([key, value]) => {
         const candidateInfo = provinceCandidates?.[key];
@@ -211,6 +211,15 @@ export default function Home() {
           color: candidateInfo?.warna || '#000000'
         };
       });
+    return [entries as any, {
+      labels: entries.map((item, index) => `Candidate #${ index + 1}`),
+      datasets: [{
+        label: 'Total Votes',
+        data: entries.map(item => item.value),
+        backgroundColor: entries.map(item => item.color),
+        hoverOffset: 4
+      }]
+    } as any];
   };
 
   // Add clear filters function
@@ -361,9 +370,9 @@ export default function Home() {
             {/* Province Cards Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {Object.keys(overallData.tungsura.table).map(provinceCode => {
-                const chartData = getOverallChartData(provinceCode);
+                const [entries, chartData] = getOverallChartData(provinceCode);
                 const provinceInfo = provinces.find(p => p.kode === provinceCode);
-                const total = chartData.reduce((sum, item) => sum + item.value, 0);
+                const total = entries.reduce((sum, item) => sum + item.value, 0);
                 const provinceProgress = overallData.tungsura.table[provinceCode].progres;
 
                 return (
@@ -374,18 +383,25 @@ export default function Home() {
                       <div className="text-sm mb-2">
                         Progress: {provinceProgress.progres.toLocaleString()} / {provinceProgress.total.toLocaleString()} TPS ({((provinceProgress.progres / provinceProgress.total) * 100).toFixed(2)}%)
                       </div>
+                      
                       <div className="w-full bg-gray-200 rounded-full h-2 dark:bg-gray-700">
                         <div 
                           className="bg-blue-600 h-2 rounded-full" 
                           style={{ width: `${(provinceProgress.progres / provinceProgress.total * 100)}%` }}
                         />
                       </div>
+                      
+                      <div className="aspect-square relative mb-4">
+                        <Pie
+                          data={chartData}
+                        />
+                      </div>
                     </div>
 
-                    {chartData.length > 0 && (
+                    {entries.length > 0 && (
                       <>
                         <div className="space-y-2">
-                          {chartData.map(item => (
+                          {entries.map(item => (
                             <div key={item.id} className="flex justify-between items-center text-sm">
                               <div className="flex items-center gap-2">
                                 <div 
