@@ -184,10 +184,10 @@ export default function Home() {
       return [entries as any, {
         labels: entries.map((item, index) => `Candidate #${ index + 1}`),
         datasets: [{
-          label: 'Total Votes',
-          data: entries.map(item => item.value),
+          label: 'Percentage',
+          data: entries.map(item => Number(Number(item.value / total * 100).toFixed(2))),
           backgroundColor: entries.map(item => item.color),
-          hoverOffset: 4
+          hoverOffset: 2
         }]
       } as any];
   };
@@ -214,10 +214,10 @@ export default function Home() {
     return [entries as any, {
       labels: entries.map((item, index) => `Candidate #${ index + 1}`),
       datasets: [{
-        label: 'Total Votes',
-        data: entries.map(item => item.value),
+        label: 'Percentage',
+        data: entries.map(item => Number(Number(item.value / total * 100).toFixed(2))),
         backgroundColor: entries.map(item => item.color),
-        hoverOffset: 4
+        hoverOffset: 2
       }]
     } as any];
   };
@@ -240,10 +240,10 @@ export default function Home() {
     return [entries as any, {
       labels: entries.map((item, index) => `Candidate #${ index + 1}`),
       datasets: [{
-        label: 'Total Votes',
-        data: entries.map(item => item.value),
+        label: 'Percentage',
+        data: entries.map(item => Number(Number(item.value / total * 100).toFixed(2))),
         backgroundColor: entries.map(item => item.color),
-        hoverOffset: 4
+        hoverOffset: 2
       }]
     } as any];
   }
@@ -253,22 +253,6 @@ export default function Home() {
     setSelectedDistrict("");
   };
   
-  const chartOptions = {
-      tooltips: {
-          enabled: false
-      },
-      plugins: {
-          datalabels: {
-              formatter: (value, ctx) => {
-                  const datapoints = ctx.chart.data.datasets[0].data
-                  const total = datapoints.reduce((total, datapoint) => total + datapoint, 0)
-                  const percentage = value / total * 100
-                  return percentage.toFixed(2) + "%";
-              },
-              color: '#fff',
-          }
-      }
-  };
 
   return (
     <main className={`${geistSans.variable} ${geistMono.variable} min-h-screen p-4 sm:p-8 font-[family-name:var(--font-geist-sans)]`}>
@@ -362,10 +346,10 @@ export default function Home() {
                       </div>
                     </div>
 
-                    <div className="aspect-square relative mb-4">
+                    <div className="aspect-square relative py-4">
                       <Pie
                         data={chartData}
-                        options={chartOptions}
+                        
                       />
                     </div>
 
@@ -377,7 +361,7 @@ export default function Home() {
                               className="w-3 h-3 rounded-full" 
                               style={{ backgroundColor: String(item.color) }}
                             />
-                            <span>{String(item.label)}</span>
+                            <p className="w-48 text-sm overflow-scroll">{String(item.label)}</p>
                           </div>
                           <span className="font-mono">{item.value.toLocaleString()}</span>
                         </div>
@@ -434,10 +418,10 @@ export default function Home() {
                         />
                       </div>
                       
-                      <div className="aspect-square relative mb-4">
+                      <div className="aspect-square relative py-4">
                         <Pie
                           data={chartData}
-                          options={chartOptions}
+                          
                         />
                       </div>
                     </div>
@@ -452,7 +436,7 @@ export default function Home() {
                                   className="w-3 h-3 rounded-full" 
                                   style={{ backgroundColor: String(item.color) }}
                                 />
-                                <span>{String(item.label)}</span>
+                                <p className="w-48 text-sm overflow-scroll">{String(item.label)}</p>
                               </div>
                               <span className="font-mono">{item.value.toLocaleString()}</span>
                             </div>
@@ -463,7 +447,7 @@ export default function Home() {
                                 className="w-3 h-3 rounded-full" 
                                 style={{ backgroundColor: "#d1cfcf" }}
                               />
-                              <span>Total Votes</span>
+                              <p className="w-48 text-sm overflow-scroll">Total Votes</p>
                             </div>
                             <span className="font-mono">{total.toLocaleString()}</span>
                           </div>
